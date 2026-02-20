@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -8,15 +8,8 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { Card, Text } from "react-native-paper";
-
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  thumbnail: string;
-}
+import { Product } from "../interfaces/Producto.interface";
+import Producto from "../productos/producto";
 
 export default function ProductosPorCategoria() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
@@ -36,6 +29,7 @@ export default function ProductosPorCategoria() {
       setRefreshing(false);
     }
   };
+  const router = useRouter();
 
   useEffect(() => {
     fetchProducts();
@@ -63,25 +57,15 @@ export default function ProductosPorCategoria() {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
       renderItem={({ item }) => (
-        <Card style={styles.card} mode="elevated">
-          <Card.Cover source={{ uri: item.thumbnail }} />
-
-          <Card.Content style={styles.content}>
-            <Text variant="titleMedium" style={styles.title}>
-              {item.title}
-            </Text>
-
-            <Text
-              variant="bodySmall"
-              numberOfLines={2}
-              style={styles.description}
-            >
-              {item.description}
-            </Text>
-
-            <Text style={styles.price}>${item.price}</Text>
-          </Card.Content>
-        </Card>
+        <Producto
+          producto={item}
+          onPress={() =>
+            router.push({
+              pathname: "/productos/productoDetalle",
+              params: { id: item.id.toString() },
+            })
+          }
+        />
       )}
     />
   );
@@ -95,25 +79,5 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     padding: 16,
-  },
-  card: {
-    marginBottom: 20,
-    borderRadius: 16,
-    overflow: "hidden",
-  },
-  content: {
-    paddingTop: 12,
-  },
-  title: {
-    fontWeight: "600",
-    marginBottom: 4,
-  },
-  description: {
-    opacity: 0.6,
-  },
-  price: {
-    marginTop: 10,
-    fontSize: 18,
-    fontWeight: "bold",
   },
 });

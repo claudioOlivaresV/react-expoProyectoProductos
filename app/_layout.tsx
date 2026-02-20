@@ -34,9 +34,6 @@ export default function RootLayout() {
     }
   };
 
-  const handleSearch = () => console.log("Buscar...");
-  const handleMore = () => console.log("Opciones...");
-
   // 🔹 Ocultar header en login
   const hideHeader = pathname === "/";
 
@@ -48,9 +45,8 @@ export default function RootLayout() {
             {pathname !== "/home" && (
               <Appbar.BackAction onPress={() => router.back()} />
             )}
-            <Appbar.Content title="Mi App" />
-            <Appbar.Action icon="magnify" onPress={handleSearch} />
-            <Appbar.Action icon="dots-vertical" onPress={handleMore} />
+            <Appbar.Content title="Tienda" />
+
             <Appbar.Action icon="logout" onPress={handleLogout} />
           </Appbar.Header>
         )}
