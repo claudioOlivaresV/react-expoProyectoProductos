@@ -1,10 +1,13 @@
 // app/home/categorias/producto.tsx
+import { useLocalSearchParams } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function Producto() {
+  const { slug } = useLocalSearchParams<{ slug: string }>();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Detalle del Producto</Text>
+      <Text>Slug recibido: {slug}</Text>
     </View>
   );
 }
